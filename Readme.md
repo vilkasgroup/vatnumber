@@ -1,10 +1,35 @@
 # European VAT number
 
-**This module has been archived, it’s no longer maintained but you still can fork it if you need it for your shop.**
+**This repository is forked and maintained by Vilkas Group.**
 
 ## About
 
-Enables you to enter the intra-community VAT number when creating the address. You must fill in the company field to allow entering the VAT number.
+Enables you to enter the intra-community VAT number when creating the address. You must fill in the company field to allow entering the VAT number. This module now uses the new Vies RestAPI endpoint.
+
+## Developing
+
+```
+composer dump-autoload --optimize --no-dev --classmap-authoritative
+```
+
+## Creating a new release
+Remember to:
+- Up the version number in the main module file
+- Update CHANGELOG
+
+Releases are triggered by tags matching vx.x.x being pushed, for example:
+```
+git tag v1.0.0
+git push --tags
+```
+
+## Running tests
+
+Tests require apikey to be defined.
+
+```
+composer run-script test
+```
 
 ## Reporting issues
 

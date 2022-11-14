@@ -24,6 +24,8 @@
 *  International Registered Trademark & Property of PrestaShop SA
 */
 
+use Vilkas\VatNumber\Client\VatNumberClient;
+
 if (!defined('_PS_VERSION_'))
     exit;
 
@@ -33,7 +35,7 @@ class VatNumber extends TaxManagerModule
     {
         $this->name = 'vatnumber';
         $this->tab = 'billing_invoicing';
-        $this->version = '2.1.0';
+        $this->version = '2.1.1';
         $this->author = 'PrestaShop';
         $this->need_instance = 0;
 
@@ -156,14 +158,16 @@ class VatNumber extends TaxManagerModule
         if (array_search($prefix, self::getPrefixIntracomVAT()) === false)
             return array(Tools::displayError('Invalid VAT number'));
         $vat = Tools::substr($vat_number, 2);
-        $newUrl = implode('/', ['https://ec.europa.eu/taxation_customs/vies/rest-api/ms', urlencode($prefix), 'vat', urlencode($vat)]);
+        // $newUrl = implode('/', ['https://ec.europa.eu/taxation_customs/vies/rest-api/ms', urlencode($prefix), 'vat', urlencode($vat)]);
 
-        $ch = curl_init($newUrl);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        $output = curl_exec($ch);
+        // $ch = curl_init($newUrl);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        // $output = curl_exec($ch);
 
         try {
-            $result = json_decode($output, true);
+            $client = new VatNumberClient();
+            $result = $client->getVatInfo($prefix, $vat);
+            // $result = json_decode($output, true);
             if ($result['isValid']) {
                 return [];
             } else {
